@@ -266,7 +266,7 @@ func (c *Client) SchemaApply(ctx context.Context, params *SchemaApplyParams) (*S
 
 // SchemaApplySlice runs the 'schema apply' command for multiple targets.
 func (c *Client) SchemaApplySlice(ctx context.Context, params *SchemaApplyParams) ([]*SchemaApply, error) {
-	args := []string{"schema", "apply", "--format", "{{ json . }}"}
+	args := []string{"schema", "apply"}
 	// Global flags
 	if params.ConfigURL != "" {
 		args = append(args, "--config", params.ConfigURL)
@@ -301,9 +301,9 @@ func (c *Client) SchemaApplySlice(ctx context.Context, params *SchemaApplyParams
 	}
 	switch {
 	case params.DryRun:
-		args = append(args, "--dry-run")
+		args = append(args, "--dry-run", "--format", "{{ json . }}")
 	case params.AutoApprove:
-		args = append(args, "--auto-approve")
+		args = append(args, "--auto-approve", "--format", "{{ json . }}")
 	}
 	return jsonDecodeErr(newSchemaApplyError)(c.runCommand(ctx, args))
 }
